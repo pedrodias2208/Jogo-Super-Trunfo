@@ -1,0 +1,262 @@
+import random
+import os
+import time
+
+# ==========================================
+# DEFINIÇÃO DE CORES (ANSI)
+# ==========================================
+VERDE = '\033[92m'
+AMARELO = '\033[93m'
+AZUL = '\033[96m'
+VERMELHO = '\033[91m'
+BRANCO = '\033[97m'
+RESET = '\033[0m'
+
+cartas = [
+    # Icons (Lendas)
+    ["Pelé", 95, 95, 96, 93, 96, 60, 76],
+    ["Ronaldo", 94, 97, 95, 81, 95, 45, 76],
+    ["Zinedine Zidane", 94, 85, 92, 96, 95, 75, 86],
+    ["Ronaldinho", 93, 91, 90, 91, 95, 37, 81],
+    ["Johan Cruyff", 93, 91, 92, 91, 94, 42, 73],
+    ["Garrincha", 92, 90, 87, 94, 96, 41, 68],
+    ["Paolo Maldini", 92, 86, 56, 75, 74, 96, 83],
+    ["Ferenc Puskás", 92, 89, 96, 91, 92, 46, 76],
+    ["Ruud Gullit", 90, 85, 86, 88, 87, 80, 89],
+    ["Roberto Carlos", 90, 92, 83, 85, 84, 84, 86],
+    
+    # Jogadores Atuais
+    ["Kylian Mbappé", 91, 97, 90, 81, 92, 37, 76],
+    ["Mohamed Salah", 91, 89, 88, 86, 90, 45, 76],
+    ["Erling Haaland", 90, 86, 91, 70, 80, 45, 88],
+    ["Jude Bellingham", 90, 80, 86, 83, 90, 78, 85],
+    ["Rodri", 90, 65, 80, 86, 84, 86, 85],
+    ["Virgil van Dijk", 90, 73, 60, 72, 72, 90, 87],
+    ["Vinícius Jr.", 90, 95, 84, 81, 90, 29, 68],
+    ["Kevin De Bruyne", 90, 72, 85, 94, 87, 65, 78],
+    ["Lamine Yamal", 89, 85, 81, 86, 90, 23, 53],
+    ["Rúben Dias", 89, 62, 39, 66, 68, 89, 87]
+]
+
+nomes_atributos = ["", "OVERALL", "RITMO", "FINALIZAÇÃO", "PASSE", "CONDUÇÃO", "DEFESA", "FÍSICO"]
+
+random.shuffle(cartas)
+
+jogador_1 = []
+jogador_2 = []
+meio = len(cartas) // 2
+
+for i in range(len(cartas)):
+    if i < meio:
+        jogador_1.append(cartas[i])
+    else:
+        jogador_2.append(cartas[i])
+
+# Limpa a tela antes de começar
+os.system('cls' if os.name == 'nt' else 'clear')
+
+# ==========================================
+# MENU DE ESCOLHA DO MODO DE JOGO
+# ==========================================
+print(f"{AMARELO}")
+print("███████╗██╗   ██╗██████╗ ███████╗██████╗ ") #TABELA ASCII    
+print("██╔════╝██║   ██║██╔══██╗██╔════╝██╔══██╗")
+print("███████╗██║   ██║██████╔╝█████╗  ██████╔╝")
+print("╚════██║██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗")
+print("███████║╚██████╔╝██║     ███████╗██║  ██║")
+print("╚══════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝")
+print("████████╗██████╗ ██╗   ██╗███╗   ██╗███████╗ ██████╗ ")
+print("╚══██╔══╝██╔══██╗██║   ██║████╗  ██║██╔════╝██╔═══██╗")
+print("   ██║   ██████╔╝██║   ██║██╔██╗ ██║█████╗  ██║   ██║")
+print("   ██║   ██╔══██╗██║   ██║██║╚██╗██║██╔══╝  ██║   ██║")
+print("   ██║   ██║  ██║╚██████╔╝██║ ╚████║██║     ╚██████╔╝")
+print("   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝      ╚═════╝ ")
+print(f"                                             FIFA 26{RESET}\n")
+
+print(f"{BRANCO}1 - Jogador vs Jogador (PvP)")
+print(f"2 - Jogador vs Computador (PvE){RESET}")
+modo_jogo = int(input(f"\n{AZUL}Escolha o modo de jogo (1 ou 2): {RESET}"))
+
+turno = 1 
+
+# ==========================================
+# ESTRADA 1: MODO JOGADOR VS JOGADOR (PvP)
+# ==========================================
+if modo_jogo == 1:
+    while len(jogador_1) > 0 and len(jogador_2) > 0:
+        os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela a cada rodada!
+        
+        carta_1 = jogador_1[0]
+        carta_2 = jogador_2[0]
+        
+        print(f"{AMARELO}{'='*50}{RESET}")
+        print(f"{BRANCO}PLACAR -> {VERDE}Jogador 1: {len(jogador_1)} cartas {BRANCO}| {VERMELHO}Jogador 2: {len(jogador_2)} cartas{RESET}")
+        print(f"{AMARELO}{'='*50}{RESET}")
+
+        if turno == 1:
+            print(f"\n{VERDE}>>> VEZ DO JOGADOR 1 <<<{RESET}")
+            print(f"{VERDE}╔════════════════════════════════════╗")
+            print(f"║{BRANCO}{carta_1[0].upper():^36}{VERDE}║")
+            print(f"╠════════════════════════════════════╣")
+            print(f"║ {AZUL}[1] 🌟 OVERALL     :{RESET} {carta_1[1]:<13} {VERDE}║")
+            print(f"║ {AZUL}[2] ⚡ RITMO       :{RESET} {carta_1[2]:<13} {VERDE}║")
+            print(f"║ {AZUL}[3] 🎯 FINALIZAÇÃO :{RESET} {carta_1[3]:<13} {VERDE}║")
+            print(f"║ {AZUL}[4] 👟 PASSE       :{RESET} {carta_1[4]:<13} {VERDE}║")
+            print(f"║ {AZUL}[5] 🏃 CONDUÇÃO    :{RESET} {carta_1[5]:<13} {VERDE}║")
+            print(f"║ {AZUL}[6] 🛡️  DEFESA      :{RESET} {carta_1[6]:<13} {VERDE}║")
+            print(f"║ {AZUL}[7] 💪 FÍSICO      :{RESET} {carta_1[7]:<13} {VERDE}║")
+            print(f"╚════════════════════════════════════╝{RESET}")
+            
+            categoria = int(input(f"\n{VERDE}Jogador 1, escolha o número do atributo: {RESET}"))
+        else:
+            print(f"\n{VERMELHO}>>> VEZ DO JOGADOR 2 <<<{RESET}")
+            print(f"{VERMELHO}╔════════════════════════════════════╗")
+            print(f"║{BRANCO}{carta_2[0].upper():^36}{VERMELHO}║")
+            print(f"╠════════════════════════════════════╣")
+            print(f"║ {AZUL}[1] 🌟 OVERALL     :{RESET} {carta_2[1]:<13} {VERMELHO}║")
+            print(f"║ {AZUL}[2] ⚡ RITMO       :{RESET} {carta_2[2]:<13} {VERMELHO}║")
+            print(f"║ {AZUL}[3] 🎯 FINALIZAÇÃO :{RESET} {carta_2[3]:<13} {VERMELHO}║")
+            print(f"║ {AZUL}[4] 👟 PASSE       :{RESET} {carta_2[4]:<13} {VERMELHO}║")
+            print(f"║ {AZUL}[5] 🏃 CONDUÇÃO    :{RESET} {carta_2[5]:<13} {VERMELHO}║")
+            print(f"║ {AZUL}[6] 🛡️  DEFESA      :{RESET} {carta_2[6]:<13} {VERMELHO}║")
+            print(f"║ {AZUL}[7] 💪 FÍSICO      :{RESET} {carta_2[7]:<13} {VERMELHO}║")
+            print(f"╚════════════════════════════════════╝{RESET}")
+            
+            categoria = int(input(f"\n{VERMELHO}Jogador 2, escolha o número do atributo: {RESET}"))
+
+        print("\n" + "."*30)
+        print("PREPARANDO O CONFRONTO...")
+        time.sleep(1) # Pausa dramática!
+
+        print(f"\n{BRANCO}--- RESULTADO DO DUELO ---{RESET}")
+        print(f"{VERDE}Jogador 1: {carta_1[0]} -> {carta_1[categoria]}{RESET}")
+        print(f"{VERMELHO}Jogador 2: {carta_2[0]} -> {carta_2[categoria]}{RESET}")
+        print("-" * 26)
+
+        if carta_1[categoria] > carta_2[categoria]:
+            print(f"{VERDE}🏆 JOGADOR 1 VENCEU A RODADA!{RESET}")
+            jogador_1.append(jogador_1.pop(0)) 
+            jogador_1.append(jogador_2.pop(0)) 
+        elif carta_1[categoria] < carta_2[categoria]:
+            print(f"{VERMELHO}🏆 JOGADOR 2 VENCEU A RODADA!{RESET}")
+            jogador_2.append(jogador_2.pop(0)) 
+            jogador_2.append(jogador_1.pop(0)) 
+        else:
+            print(f"{AMARELO}⚖️ EMPATE! Ninguém rouba carta.{RESET}")
+            jogador_1.append(jogador_1.pop(0)) 
+            jogador_2.append(jogador_2.pop(0)) 
+
+        turno = 2 if turno == 1 else 1
+        
+        # Pausa para o usuário ler o resultado antes de limpar a tela para a próxima rodada
+        input(f"\n{BRANCO}[Pressione ENTER para a próxima rodada]{RESET}")
+
+# ==========================================
+# MODO JOGADOR VS COMPUTADOR 
+# ==========================================
+elif modo_jogo == 2:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(f"{AZUL}>>> CONFIGURAÇÃO DA MÁQUINA <<<{RESET}\n")
+    print("Escolha a dificuldade:")
+    print(f"{VERDE}1 - Fácil   (Escolhe atributos aleatoriamente){RESET}")
+    print(f"{AMARELO}2 - Médio   (Escolhe o 2º melhor atributo da carta){RESET}")
+    print(f"{VERMELHO}3 - Difícil (Escolhe sempre o melhor atributo){RESET}")
+    dificuldade = int(input(f"\n{AZUL}Digite o nível (1, 2 ou 3): {RESET}"))
+
+    while len(jogador_1) > 0 and len(jogador_2) > 0:
+        os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela!
+        carta_1 = jogador_1[0]
+        carta_2 = jogador_2[0]
+        
+        print(f"{AMARELO}{'='*50}{RESET}")
+        print(f"{BRANCO}PLACAR -> {VERDE}Jogador 1: {len(jogador_1)} cartas {BRANCO}| {VERMELHO}Máquina: {len(jogador_2)} cartas{RESET}")
+        print(f"{AMARELO}{'='*50}{RESET}")
+
+        if turno == 1:
+            print(f"\n{VERDE}>>> SUA VEZ <<<{RESET}")
+            print(f"{VERDE}╔════════════════════════════════════╗")
+            print(f"║{BRANCO}{carta_1[0].upper():^36}{VERDE}║")
+            print(f"╠════════════════════════════════════╣")
+            print(f"║ {AZUL}[1] 🌟 OVERALL     :{RESET} {carta_1[1]:<13} {VERDE}║")
+            print(f"║ {AZUL}[2] ⚡ RITMO       :{RESET} {carta_1[2]:<13} {VERDE}║")
+            print(f"║ {AZUL}[3] 🎯 FINALIZAÇÃO :{RESET} {carta_1[3]:<13} {VERDE}║")
+            print(f"║ {AZUL}[4] 👟 PASSE       :{RESET} {carta_1[4]:<13} {VERDE}║")
+            print(f"║ {AZUL}[5] 🏃 CONDUÇÃO    :{RESET} {carta_1[5]:<13} {VERDE}║")
+            print(f"║ {AZUL}[6] 🛡️  DEFESA      :{RESET} {carta_1[6]:<13} {VERDE}║")
+            print(f"║ {AZUL}[7] 💪 FÍSICO      :{RESET} {carta_1[7]:<13} {VERDE}║")
+            print(f"╚════════════════════════════════════╝{RESET}")
+            
+            categoria = int(input(f"\n{VERDE}Escolha o número do atributo para o duelo: {RESET}"))
+        else:
+            print(f"\n{VERMELHO}>>> VEZ DO COMPUTADOR <<<{RESET}")
+            print(f"{AMARELO}A máquina está analisando a própria carta...{RESET}")
+            time.sleep(1.5) # Computador fingindo que pensa
+            
+            if dificuldade == 1:
+                categoria = random.randint(1, 7)
+            elif dificuldade == 2:
+                melhor_valor = -1
+                segundo_melhor_valor = -1
+                melhor_categoria = 1
+                segunda_melhor_categoria = 1
+                for indice in range(1, 8):
+                    valor_atual = carta_2[indice]
+                    if valor_atual > melhor_valor:
+                        segundo_melhor_valor = melhor_valor
+                        segunda_melhor_categoria = melhor_categoria
+                        melhor_valor = valor_atual
+                        melhor_categoria = indice
+                    elif valor_atual > segundo_melhor_valor:
+                        segundo_melhor_valor = valor_atual
+                        segunda_melhor_categoria = indice
+                categoria = segunda_melhor_categoria
+            else:
+                maior_valor = -1
+                melhor_categoria = 1
+                for indice in range(1, 8):
+                    if carta_2[indice] > maior_valor:
+                        maior_valor = carta_2[indice]
+                        melhor_categoria = indice
+                categoria = melhor_categoria
+                
+            print(f"{BRANCO}O Computador escolheu o atributo: {AZUL}{nomes_atributos[categoria]}!{RESET}")
+            time.sleep(1.5)
+
+        print(f"\n{BRANCO}--- RESULTADO DO DUELO ---{RESET}")
+        print(f"{VERDE}Você: {carta_1[0]} -> {carta_1[categoria]}{RESET}")
+        print(f"{VERMELHO}Máquina: {carta_2[0]} -> {carta_2[categoria]}{RESET}")
+        print("-" * 26)
+
+        if carta_1[categoria] > carta_2[categoria]:
+            print(f"{VERDE}🏆 VOCÊ VENCEU A RODADA!{RESET}")
+            jogador_1.append(jogador_1.pop(0)) 
+            jogador_1.append(jogador_2.pop(0)) 
+        elif carta_1[categoria] < carta_2[categoria]:
+            print(f"{VERMELHO}☠️ A MÁQUINA VENCEU A RODADA!{RESET}")
+            jogador_2.append(jogador_2.pop(0)) 
+            jogador_2.append(jogador_1.pop(0)) 
+        else:
+            print(f"{AMARELO}⚖️ EMPATE! Ninguém rouba carta.{RESET}")
+            jogador_1.append(jogador_1.pop(0)) 
+            jogador_2.append(jogador_2.pop(0)) 
+
+        turno = 2 if turno == 1 else 1
+        
+        input(f"\n{BRANCO}[Pressione ENTER para a próxima rodada]{RESET}")
+
+else:
+    print(f"{VERMELHO}Modo de jogo inválido! Rode o código novamente.{RESET}")
+
+# ==========================================
+# MENSAGEM FINAL DE VITÓRIA
+# ==========================================
+if modo_jogo == 1 or modo_jogo == 2:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(f"{AMARELO}{'='*50}")
+    print("                FIM DE JOGO!                 ")
+    print(f"{'='*50}{RESET}")
+    
+    if len(jogador_1) == 0:
+        print(f"\n{VERMELHO}🏆 O JOGADOR 2 (ou MÁQUINA) conquistou todas as cartas!{RESET}\n")
+    else:
+        print(f"\n{VERDE}🏆 O JOGADOR 1 conquistou todas as cartas e VENCEU!{RESET}\n")
